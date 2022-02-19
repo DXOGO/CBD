@@ -1,0 +1,332 @@
+alinea e) -------------------------------------------------------
+
+# DELETE
+
+qlsh:cbd_03_04> DELETE FROM player WHERE id=3;
+cqlsh:cbd_03_04> DELETE FROM player WHERE id=6;
+cqlsh:cbd_03_04> SELECT * FROM player;
+
+ id | name         | age | team_id | value
+----+--------------+-----+---------+----------
+  5 |     Jorginho |  30 |       4 | 45000000
+ 10 |        Piqué |  34 |       7 |  7500000
+ 16 |        Messi |   0 |      14 | 60000000
+ 13 |   João Félix |  22 |      12 | 70000000
+ 11 |       Haller |  27 |       8 | 27000000
+  1 | Darwin Núnez |  22 |       1 | 32000000
+ 19 |        Neuer |  35 |      15 | 14000000
+  8 |        Salah |   0 |       5 |        0
+  2 |     J. Weigl |  26 |       1 | 22000000
+  4 |      Vitinha |  21 |       3 | 12000000
+ 18 |         Roca |  25 |      15 |  7000000
+ 15 |       Neymar |  29 |      14 |  9000000
+ 20 |         Sané |  25 |      15 | 70000000
+  7 |      Alisson |  29 |       5 | 60000000
+  9 |      Benzema |  34 |       6 | 25000000
+ 14 |  Diogo Leite |  22 |      13 |  8000000
+ 17 |  Lewandowski |  33 |      15 | 55000000
+ 12 |       Tomori |  24 |       9 | 45000000
+
+(18 rows)
+
+/
+
+cqlsh:cbd_03_04> DELETE FROM club WHERE id=7 and name='AJA';
+cqlsh:cbd_03_04> DELETE FROM club WHERE id=9 and name='ASM'and foundation_year='1927-01-08';
+cqlsh:cbd_03_04> SELECT * FROM club ;
+
+ id | name | foundation_year                 | country | modalidades
+----+------+---------------------------------+---------+---------------------------------------------------------------------------------------------------
+  5 |  REA | 1902-03-06 00:36:45.000000+0000 |      ES |                                                                        ['football', 'basketball']
+ 10 |  ZEN | 1925-05-25 00:00:00.000000+0000 |      RU |                                                           ['football', 'voleyball', 'basketball']
+ 13 |  BRA | 1921-01-19 00:00:00.000000+0000 |      PT |                                                              ['football', 'futsal', 'volleyball']
+ 11 |  ZAG | 1911-04-26 00:36:45.000000+0000 |      HR |                                                              ['football', 'hockey', 'basketball']
+  1 |  SLB | 1904-12-28 00:36:45.000000+0000 |      PT | ['football', 'volleyball', 'handball', 'futsal', 'basketball', 'hockey', 'gymnastics', 'esports']
+  8 |  MIL | 1899-12-16 00:36:45.000000+0000 |      IT |                                                             ['football', 'basketball', 'esports']
+  2 |  FCP | 1893-12-28 00:36:45.000000+0000 |      PT |                             ['football', 'handball', 'basketball', 'futsal', 'hockey', 'cycling']
+  4 |  LIV | 1892-06-03 00:36:45.000000+0000 |      EN |                                                                                      ['football']
+ 15 |  BAY | 1990-02-27 00:00:00.000000+0000 |      DE |                                                                        ['football', 'basketball']
+  6 |  BAR | 1899-11-29 00:36:45.000000+0000 |      ES |                                             ['football', 'handball', 'futsal', 'rugby', 'hockey']
+ 14 |  PSG | 1970-08-11 23:00:00.000000+0000 |      FR |                                                            ['football', 'handball', 'basketball']
+ 12 |  ATL | 1903-04-26 00:36:45.000000+0000 |      ES |                                                ['football', 'basketball', 'volleyball', 'futsal']
+  3 |  CHE | 1905-03-10 00:36:45.000000+0000 |      EN |                                                                                      ['football']
+
+(13 rows)
+
+/
+
+cqlsh:cbd_03_04> DELETE FROM team  WHERE id=2;
+cqlsh:cbd_03_04> SELECT * FROM team ;
+
+ id | name             | club_id | coach               | players                                                                                                                                                                                | titles
+----+------------------+---------+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  5 | Equipa Principal |       4 |        Jürgen Klopp |                                        {'Alexander-Arnold', 'Alisso', 'Alisson', 'Diogo Jota', 'Fabinho', 'Henderson', 'Matip', 'Oxlade-Chamberlain', 'Salah', 'Tsimikas', 'van Dijk'} |                               {'Campeonato do Mundo de Clubes', 'Championship', 'Europa League', 'FA Community Shield', 'League Cup', 'Liga Inglesa', 'Liga dos Campeões', 'Mundial de Clubes', 'Supertaça Europeia', 'The FA Cup'}
+ 10 | Equipa Principal |      12 |       Diego Simeone |                                                                {'Carrasco', 'Felipe', 'Hermoso', 'João Félix', 'Koke', 'Kondogbia', 'Lemar', 'Oblak', 'Suaréz', 'Trippier', 'de Paul'} |                                                            {'Copa del Rey', 'Europa League', 'Liga Espanhola', 'Segunda Divisão Espanhola', 'Supercopa de España', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça das Taças'}
+ 13 | Equipa Principal |      15 |   Julian Nagelsmann |                                                                  {'Davies', 'Gnabry', 'Hernández', 'Lewandowski', 'Musiala', 'Müller', 'Neuer', 'Pavard', 'Roca', 'Sané', 'Upamecano'} | {'1. Bundesliga', 'Campeonato da Alemanha', 'Campeonato do Mundo de Clubes', 'DFB Pokal', 'DFL-SuperCup', 'Europa League', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça Liga Alemã', 'Taça das Taças'}
+ 11 | Equipa Principal |      13 |    Carlos Carvalhal |                        {'Abel Ruiz', 'André Horta', 'Diogo Leite', 'Francisco Moura', 'Lucas Mineiro', 'Lucas Piazon', 'Raúl Silva', 'Ricardo Horta', 'Vítor Tormena', 'Yan Coucampo'} |                                                                                                                                                            {'II Divisão', 'Taça da Liga', 'Taça de Portugal', 'UEFA Intertoto Cup'}
+  1 | Equipa Principal |       1 |         Jorge Jesus |                                 {'Adel Taarabt', 'Darwin Núnez', 'Everton', 'Joao Mario', 'Julian Weigl', 'Lucas Verissimo', 'Odysseas Vlachodimos', 'Pizzi', 'Rafa', 'Álex Grimaldo'} |                                                                                             {'Campeonato de Portugal', 'Liga Portuguesa', 'Liga dos Campeões', 'Supertaça Cândido de Oliveira', 'Taça da Liga', 'Taça de Portugal'}
+  8 | Equipa Principal |       7 |       Erik Ten Haag |                                                                {'Antony', 'Berghuis', 'Blind', 'Gravenberch', 'Haller', 'Klaassen', 'Pasveer', 'Rensch', 'Schuurs', 'Tadic', 'Timber'} |                                                                                              {'Eredivisie', 'Europa League', 'Intertoto Cup', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça das Taças'}
+  4 | Equipa Principal |       3 |       Thomas Tuchel | {'Andreas Christensen', 'César Azpilicueta', 'Hakim Ziyech', 'Jorginho', 'Kanté', 'Kepa Arrizabalaga', 'Malang Sarr', 'Mateo Kovacic', 'Romelu Lukaku', 'Ross Barkley', 'Saúl Ñíguez'} |                                                                                     {'Championship', 'Europa League', 'FA Community Shield', 'League Cup', 'Liga Inglesa', 'Liga dos Campeões', 'Supertaça Europeia', 'The FA Cup'}
+  7 | Equipa Principal |       6 |                Xavi |                                                                   {'Alba', 'Araújo ', 'Busquets', 'Dembélé', 'Ez Abde', 'García ', 'Gavi', 'Jutglà', 'Piqué', 'de Jong', 'ter Stegen'} |                                                                                 {'Campeonato do Mundo de Clubes', 'Copa de la Liga', 'Copa del Rey', 'Liga Espanhola', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça de Espana'}
+  6 | Equipa Principal |       5 |     Carlo Ancelotti |                                                            {'Benzema', 'Camavinga', 'Courtois', 'Fernández', 'Hazard', 'Kroos', 'Mendy', 'Militão', 'Valverde', 'Vinícius', 'Vázquez'} |                                  {'Campeonato do Mundo de Clubes', 'Copa de la Liga', 'Copa del Rey', 'Europa League', 'Liga Espanhola', 'Liga dos Campeões', 'Supercopa de Espana', 'Supertaça Europeia', 'Taça Intercontinental'}
+  9 | Equipa Principal |       8 |       Stefano Pioli |                                                                   {'Florenzi', 'Giroud', 'Hernández', 'Kessié', 'Maignan', 'Messias', 'Romagnoli', 'Saelemaekers', 'Tomori', 'Tonali'} |                                        {'Campeonato do Mundo de Clubes', 'Coppa Italia', 'Liga Italiana', 'Liga dos Campeões', 'Serie B Italiana', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça Mitropa', 'Taça das Taças'}
+ 12 | Equipa Principal |      14 | Mauricio Pochettino |                                                                {'Di María', 'Gueye', 'Hakimi', 'Herrera', 'Kimpembe', 'Marquinhos', 'Mendes', 'Messi', 'Navas', 'Neymar', 'Wijnaldum'} |                                                                                                 {'Coupe de France', 'Ligue 1', 'Ligue 2', 'Taça da Liga Francesa', 'Taça das Taças', 'Trophée des Champions', 'UEFA Intertoto Cup'}
+  3 | Equipa Principal |       2 |    Sérgio Conceição |                                         {'Evanilson', 'Fábio Cardoso', 'João Mário', 'Luis Díaz', 'Marchesín', 'Mateus Uribe', 'Mbemba', 'Mehdi Taremi', 'Otávio', 'Vitinha', 'Zaidu'} |                                             {'Campeonato de Portugal', 'Europa League', 'Liga Portuguesa', 'Liga dos Campeões', 'Supertaça Cândido de Oliveira', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça de Portugal'}
+
+(12 rows)
+
+/
+/
+
+# UPDATE
+
+cqlsh:cbd_03_04> UPDATE player SET value = 90000000 WHERE id=1 and name='Darwin Núnez';
+cqlsh:cbd_03_04> UPDATE player SET age=22 WHERE id=4 and name='Vitinha';
+cqlsh:cbd_03_04> SELECT * FROM player;
+
+ id | name         | age | team_id | value
+----+--------------+-----+---------+----------
+  5 |     Jorginho |  30 |       4 | 45000000
+ 10 |        Piqué |  34 |       7 |  7500000
+ 16 |        Messi |   0 |      14 | 60000000
+ 13 |   João Félix |  22 |      12 | 70000000
+ 11 |       Haller |  27 |       8 | 27000000
+  1 | Darwin Núnez |  22 |       1 | 90000000
+ 19 |        Neuer |  35 |      15 | 14000000
+  8 |        Salah |   0 |       5 |        0
+  2 |     J. Weigl |  26 |       1 | 22000000
+  4 |      Vitinha |  22 |       3 | 12000000
+ 18 |         Roca |  25 |      15 |  7000000
+ 15 |       Neymar |  29 |      14 |  9000000
+ 20 |         Sané |  25 |      15 | 70000000
+  7 |      Alisson |  29 |       5 | 60000000
+  9 |      Benzema |  34 |       6 | 25000000
+ 14 |  Diogo Leite |  22 |      13 |  8000000
+ 17 |  Lewandowski |  33 |      15 | 55000000
+ 12 |       Tomori |  24 |       9 | 45000000
+
+(18 rows)
+
+/
+
+cqlsh:cbd_03_04> UPDATE match SET result = '10-10' WHERE id=2 and game_date='2021-12-08';
+cqlsh:cbd_03_04> UPDATE match SET result = '5-5' WHERE id=8 and game_date='2021-12-08';
+cqlsh:cbd_03_04> SELECT * FROM match;
+
+ id | game_date                       | competition_id | result | teams
+----+---------------------------------+----------------+--------+----------------
+  5 | 2021-12-08 00:00:00.000000+0000 |              4 |    1-0 | ['SLB', 'KYI']
+ 10 | 2021-12-11 00:00:00.000000+0000 |              9 |    2-2 | ['HUL', 'BRI']
+ 13 | 2021-10-18 23:00:00.000000+0000 |              1 |    4-0 | ['AJA', 'DOR']
+ 11 | 2021-12-22 00:00:00.000000+0000 |             10 |    2-3 | ['BOR', 'LIL']
+  1 | 2021-12-08 00:00:00.000000+0000 |              1 |    1-1 | ['MUN', 'BOY']
+  8 | 2021-12-14 00:00:00.000000+0000 |              7 |    7-0 | ['MCI', 'LEE']
+  8 | 2021-12-08 00:00:00.000000+0000 |           null |    5-5 |           null
+  2 | 2021-12-08 00:00:00.000000+0000 |              1 |  10-10 | ['BAY', 'BAR']
+  4 | 2021-09-29 23:00:00.000000+0000 |              3 |    5-1 | ['TOT', 'MUR']
+ 15 | 2021-11-07 00:00:00.000000+0000 |              5 |    4-2 | ['TON', 'MAR']
+  7 | 2021-12-23 00:00:00.000000+0000 |              6 |    3-1 | ['POR', 'PEN']
+  6 | 2021-08-28 23:00:00.000000+0000 |              5 |    0-0 | ['BRA', 'VIT']
+  9 | 2021-08-12 23:00:00.000000+0000 |              8 |    1-1 | ['MON', 'BAY']
+ 14 | 2021-10-16 23:00:00.000000+0000 |             12 |    3-0 | ['DAR', 'WER']
+ 12 | 2021-10-17 23:00:00.000000+0000 |             11 |    9-0 | ['AJA', 'CAM']
+  3 | 2021-12-09 00:00:00.000000+0000 |              2 |    3-0 | ['CEL', 'BET']
+
+(16 rows)
+
+/
+
+cqlsh:cbd_03_04> UPDATE team SET titles = {'Champions of The World'} WHERE id=1 and name='Equipa Principal';
+cqlsh:cbd_03_04> SELECT * FROM team;
+
+ id | name             | club_id | coach               | players                                                                                                                                                                                | titles
+----+------------------+---------+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  5 | Equipa Principal |       4 |        Jürgen Klopp |                                        {'Alexander-Arnold', 'Alisso', 'Alisson', 'Diogo Jota', 'Fabinho', 'Henderson', 'Matip', 'Oxlade-Chamberlain', 'Salah', 'Tsimikas', 'van Dijk'} |                               {'Campeonato do Mundo de Clubes', 'Championship', 'Europa League', 'FA Community Shield', 'League Cup', 'Liga Inglesa', 'Liga dos Campeões', 'Mundial de Clubes', 'Supertaça Europeia', 'The FA Cup'}
+ 10 | Equipa Principal |      12 |       Diego Simeone |                                                                {'Carrasco', 'Felipe', 'Hermoso', 'João Félix', 'Koke', 'Kondogbia', 'Lemar', 'Oblak', 'Suaréz', 'Trippier', 'de Paul'} |                                                            {'Copa del Rey', 'Europa League', 'Liga Espanhola', 'Segunda Divisão Espanhola', 'Supercopa de España', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça das Taças'}
+ 13 | Equipa Principal |      15 |   Julian Nagelsmann |                                                                  {'Davies', 'Gnabry', 'Hernández', 'Lewandowski', 'Musiala', 'Müller', 'Neuer', 'Pavard', 'Roca', 'Sané', 'Upamecano'} | {'1. Bundesliga', 'Campeonato da Alemanha', 'Campeonato do Mundo de Clubes', 'DFB Pokal', 'DFL-SuperCup', 'Europa League', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça Liga Alemã', 'Taça das Taças'}
+ 11 | Equipa Principal |      13 |    Carlos Carvalhal |                        {'Abel Ruiz', 'André Horta', 'Diogo Leite', 'Francisco Moura', 'Lucas Mineiro', 'Lucas Piazon', 'Raúl Silva', 'Ricardo Horta', 'Vítor Tormena', 'Yan Coucampo'} |                                                                                                                                                            {'II Divisão', 'Taça da Liga', 'Taça de Portugal', 'UEFA Intertoto Cup'}
+  1 | Equipa Principal |       1 |         Jorge Jesus |                                 {'Adel Taarabt', 'Darwin Núnez', 'Everton', 'Joao Mario', 'Julian Weigl', 'Lucas Verissimo', 'Odysseas Vlachodimos', 'Pizzi', 'Rafa', 'Álex Grimaldo'} |                                                                                                                                                                                                          {'Champions of The World'}
+  8 | Equipa Principal |       7 |       Erik Ten Haag |                                                                {'Antony', 'Berghuis', 'Blind', 'Gravenberch', 'Haller', 'Klaassen', 'Pasveer', 'Rensch', 'Schuurs', 'Tadic', 'Timber'} |                                                                                              {'Eredivisie', 'Europa League', 'Intertoto Cup', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça das Taças'}
+  4 | Equipa Principal |       3 |       Thomas Tuchel | {'Andreas Christensen', 'César Azpilicueta', 'Hakim Ziyech', 'Jorginho', 'Kanté', 'Kepa Arrizabalaga', 'Malang Sarr', 'Mateo Kovacic', 'Romelu Lukaku', 'Ross Barkley', 'Saúl Ñíguez'} |                                                                                     {'Championship', 'Europa League', 'FA Community Shield', 'League Cup', 'Liga Inglesa', 'Liga dos Campeões', 'Supertaça Europeia', 'The FA Cup'}
+  7 | Equipa Principal |       6 |                Xavi |                                                                   {'Alba', 'Araújo ', 'Busquets', 'Dembélé', 'Ez Abde', 'García ', 'Gavi', 'Jutglà', 'Piqué', 'de Jong', 'ter Stegen'} |                                                                                 {'Campeonato do Mundo de Clubes', 'Copa de la Liga', 'Copa del Rey', 'Liga Espanhola', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça de Espana'}
+  6 | Equipa Principal |       5 |     Carlo Ancelotti |                                                            {'Benzema', 'Camavinga', 'Courtois', 'Fernández', 'Hazard', 'Kroos', 'Mendy', 'Militão', 'Valverde', 'Vinícius', 'Vázquez'} |                                  {'Campeonato do Mundo de Clubes', 'Copa de la Liga', 'Copa del Rey', 'Europa League', 'Liga Espanhola', 'Liga dos Campeões', 'Supercopa de Espana', 'Supertaça Europeia', 'Taça Intercontinental'}
+  9 | Equipa Principal |       8 |       Stefano Pioli |                                                                   {'Florenzi', 'Giroud', 'Hernández', 'Kessié', 'Maignan', 'Messias', 'Romagnoli', 'Saelemaekers', 'Tomori', 'Tonali'} |                                        {'Campeonato do Mundo de Clubes', 'Coppa Italia', 'Liga Italiana', 'Liga dos Campeões', 'Serie B Italiana', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça Mitropa', 'Taça das Taças'}
+ 12 | Equipa Principal |      14 | Mauricio Pochettino |                                                                {'Di María', 'Gueye', 'Hakimi', 'Herrera', 'Kimpembe', 'Marquinhos', 'Mendes', 'Messi', 'Navas', 'Neymar', 'Wijnaldum'} |                                                                                                 {'Coupe de France', 'Ligue 1', 'Ligue 2', 'Taça da Liga Francesa', 'Taça das Taças', 'Trophée des Champions', 'UEFA Intertoto Cup'}
+  3 | Equipa Principal |       2 |    Sérgio Conceição |                                         {'Evanilson', 'Fábio Cardoso', 'João Mário', 'Luis Díaz', 'Marchesín', 'Mateus Uribe', 'Mbemba', 'Mehdi Taremi', 'Otávio', 'Vitinha', 'Zaidu'} |                                             {'Campeonato de Portugal', 'Europa League', 'Liga Portuguesa', 'Liga dos Campeões', 'Supertaça Cândido de Oliveira', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça de Portugal'}
+
+(12 rows)
+
+/
+/
+/
+
+alinea f) -------------------------------------------------------
+
+# 1. SELECT ALL PLAYERS 
+
+cqlsh:cbd_03_04> SELECT * FROM player  ;
+
+ id | name         | age | team_id | value
+----+--------------+-----+---------+----------
+  5 |     Jorginho |  30 |       4 | 45000000
+ 10 |        Piqué |  34 |       7 |  7500000
+ 16 |        Messi |   0 |      14 | 60000000
+ 13 |   João Félix |  22 |      12 | 70000000
+ 11 |       Haller |  27 |       8 | 27000000
+  1 | Darwin Núnez |  22 |       1 | 90000000
+ 19 |        Neuer |  35 |      15 | 14000000
+  8 |        Salah |   0 |       5 |        0
+  2 |     J. Weigl |  26 |       1 | 22000000
+  4 |      Vitinha |  22 |       3 | 12000000
+ 18 |         Roca |  25 |      15 |  7000000
+ 15 |       Neymar |  29 |      14 |  9000000
+ 20 |         Sané |  25 |      15 | 70000000
+  7 |      Alisson |  29 |       5 | 60000000
+  9 |      Benzema |  34 |       6 | 25000000
+ 14 |  Diogo Leite |  22 |      13 |  8000000
+ 17 |  Lewandowski |  33 |      15 | 55000000
+ 12 |       Tomori |  24 |       9 | 45000000
+
+(18 rows)
+
+/
+
+# 2. SELECT CLUB WITH ID=15
+
+cqlsh:cbd_03_04> SELECT * FROM club WHERE id=15 ;
+
+ id | name | foundation_year                 | country | modalidades
+----+------+---------------------------------+---------+----------------------------
+ 15 |  BAY | 1990-02-27 00:00:00.000000+0000 |      DE | ['football', 'basketball']
+
+(1 rows)
+
+/
+
+# SELECT TEAM AND RESULT FROM GAME ON DATE '2021-10-19'
+
+cqlsh:cbd_03_04> SELECT teams, result FROM match WHERE game_date='2021-10-19';
+
+ teams          | result
+----------------+--------
+ ['AJA', 'DOR'] |    4-0
+
+(1 rows)
+
+/
+
+# 3. SELECT ONLY ONE GAME FROM DAY '2021-12-08' (USING LIMIT=1)
+
+cqlsh:cbd_03_04> SELECT * FROM match WHERE game_date='2021-12-08' LIMIT 1;
+
+ id | game_date                       | competition_id | result | teams
+----+---------------------------------+----------------+--------+----------------
+  5 | 2021-12-08 00:00:00.000000+0000 |              4 |    1-0 | ['SLB', 'KYI']
+
+(1 rows)
+
+/
+
+# 4. SELECT ALL GAMES FROM COMPETITION WITH ID 1 AND OLDER THAN 2021-10-19' BY DESC ORDER
+
+cqlsh:cbd_03_04> SELECT * FROM match WHERE competition_id=1 AND game_date >= '2021-10-19' ORDER BY game_date;
+
+ competition_id | game_date                       | id | result | teams
+----------------+---------------------------------+----+--------+----------------
+              1 | 2021-10-18 23:00:00.000000+0000 | 13 |    4-0 | ['AJA', 'DOR']
+              1 | 2021-12-08 00:00:00.000000+0000 |  2 |    3-0 | ['BAY', 'BAR']
+              1 | 2021-12-08 00:00:00.000000+0000 |  1 |    1-1 | ['MUN', 'BOY']
+
+
+/
+
+# 5. SELECT COACH AND TROPHIES WON BY CLUB THAT HAS THE PLAYER 'DAVIES' AND
+
+cqlsh:cbd_03_04> SELECT coach,titles FROM team WHERE players CONTAINS 'Davies' ALLOW FILTERING ;;
+
+ coach             | titles
+-------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Julian Nagelsmann | {'1. Bundesliga', 'Campeonato da Alemanha', 'Campeonato do Mundo de Clubes', 'DFB Pokal', 'DFL-SuperCup', 'Europa League', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça Intercontinental', 'Taça Liga Alemã', 'Taça das Taças'}
+
+(1 rows)
+
+/ 
+
+# 6. SELECT ALL PLAYER NAMES WITH id<5
+
+cqlsh:cbd_03_04> SELECT id,name FROM player WHERE id <5 ALLOW FILTERING ;;
+
+ id | name
+----+--------------
+  1 | Darwin Núnez
+  2 |     J. Weigl
+  4 |      Vitinha
+
+(3 rows)
+
+
+/
+
+# 7. SELECT ALL COMPETITIONS BENFICA 'SLB' PLAYS INTO
+
+cqlsh:cbd_03_04> SELECT name FROM competition WHERE id > 0 AND teams CONTAINS 'SLB'  ALLOW FILTERING ;
+
+ name
+-----------------------
+         Primeira Liga
+ UEFA Champions League
+     UEFA Youth League
+       Liga Portugal 2
+
+(4 rows)
+
+/
+
+# 8. SELECT 3 CLUBS
+
+cqlsh:cbd_03_04> SELECT name,foundation_year from club LIMIT 3;
+
+ name | foundation_year
+------+---------------------------------
+  REA | 1902-03-06 00:36:45.000000+0000
+  ZEN | 1925-05-25 00:00:00.000000+0000
+  BRA | 1921-01-19 00:00:00.000000+0000
+
+(3 rows)
+
+/
+
+# 9. SELECT WHERE CLUB IS PORTO AN FOUNDATION IN '1893-12-28'
+
+cqlsh:cbd_03_04> SELECT * from club WHERE name='FCP' AND foundation_year='1893-12-28' ALLOW FILTERING ;
+
+ id | name | foundation_year                 | country | modalidades
+----+------+---------------------------------+---------+-----------------------------------------------------------------------
+  2 |  FCP | 1893-12-28 00:36:45.000000+0000 |      PT | ['football', 'handball', 'basketball', 'futsal', 'hockey', 'cycling']
+
+(1 rows)
+
+/
+
+# 10. SELECT CLUBS WITH ESPORTS TEAMS
+
+cqlsh:cbd_03_04> SELECT name,country, modalidades from club WHERE modalidades CONTAINS 'esports' ALLOW FILTERING ;
+
+ name | country | modalidades
+------+---------+---------------------------------------------------------------------------------------------------
+  SLB |      PT | ['football', 'volleyball', 'handball', 'futsal', 'basketball', 'hockey', 'gymnastics', 'esports']
+  MIL |      IT |                                                             ['football', 'basketball', 'esports']
+
+(2 rows)
+
+
+
+
+
+
+
+
+
+
+
+

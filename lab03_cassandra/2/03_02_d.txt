@@ -1,0 +1,81 @@
+1. Os últimos 3 comentários introduzidos para um vídeo
+cqlsh:cbd_03_02> SELECT * FROM videocomment WHERE video_id = 1 LIMIT 3 ;
+
+ video_id | creation_date                   | id | comment             | reviewer_email
+----------+---------------------------------+----+------------------------+----------------
+        1 | 2021-12-29 00:00:00.000000+0000 |  4 |                Awesome |    bot2@bot.pt
+        1 | 2021-12-26 00:00:00.000000+0000 |  8 |           I miss Jonas |    bot3@bot.pt
+        1 | 2021-12-23 00:00:00.000000+0000 |  3 | Best club in the world |    bot0@bot.pt
+
+(3 rows)
+
+
+// 2. Lista das tags de determinado vídeo
+cqlsh:cbd_03_02> SELECT tag FROM video WHERE id = 2;
+
+ tag
+---------------------------------------------
+ {'Basketball', 'GSW', 'NBA', 'Steph Curry'}
+
+(1 rows)
+
+
+// 3. Todos os vídeos com a tag Aveiro
+// DIDNT HAVE TAG=AVEIRO SO CHANGED TO TAG=FOOTBALL
+cqlsh:cbd_03_02> SELECT * FROM tagbyvideo where name = 'Football' ;
+
+ name     | video_id  | id
+----------+----------+----
+ Football |        1 |  2
+ Football |        2 |  3
+
+(2 rows)
+
+
+// 4. Os últimos 5 eventos de determinado vídeo realizados por um utilizador
+cqlsh:cbd_03_02> SELECT * FROM event WHERE video_id = 1 and user_email = 'bot0@bot.pt'  ;
+
+ video_id | user_email    | id | creation_date                 | time | type
+----------+-------------+----+---------------------------------+------+------
+        1 | bot0@bot.pt |  2 | 2021-12-03 10:43:09.018000+0000 |   33 |    0
+
+(1 rows)
+
+
+// 5. Vídeos partilhados por determinado utilizador (maria1987, por exemplo) num determinado período de tempo (Agosto de 2017, por exemplo);
+cqlsh:cbd_03_02> SELECT * FROM searchbyusername WHERE uploader_user = 'bot5' AND upload_date < '2021-11-30 00:00:00' ALLOW FILTERING ;
+
+ id | uploader_user | upload_date                     | description                           | followers_emails               | name                                    | tag
+----+---------------+---------------------------------+---------------------------------------+--------------------------------+-----------------------------------------+-----------------------------------
+ 10 |          bot5 | 2021-12-07 16:23:33.754000+0000 |              Unboxing the new console |                           null |                         Xbox One Review |   {'Gaming', 'Microsoft', 'Tech'}
+  8 |          bot5 | 2021-12-07 16:23:33.746000+0000 |     Quick tutorial to get you started | {'bot2@bot.pt', 'bot9@bot.pt'} | What is Cassandra and how does it work? | {'Cassandra', 'Tech', 'Tutorial'}
+  2 |          bot5 | 2021-12-07 16:23:33.717000+0000 | Best career goals from Ramadel Falcao |                {'bot4@bot.pt'} |                       Falcao Best Goals |   {'Falcao', 'Football', 'Goals'}
+
+(3 rows)
+
+
+
+// 6. Os últimos 10 vídeos, ordenado inversamente pela data da partilhada
+Impossible to execute this query as found in this link: https://stackoverflow.com/questions/35708118/where-and-order-by-clauses-in-cassandra-cql
+
+// 7. Todos os seguidores (followers) de determinado vídeo;
+cqlsh:cbd_03_02> SELECT followers_emails FROM video where id=4;
+
+ followers_emails
+--------------------------------------------------------------
+ {'bot1@bot.pt', 'bot2@bot.pt', 'bot3@bot.pt', 'bot4@bot.pt'}
+
+(1 rows)
+
+// 8. Todos os comentários (dos vídeos) que determinado utilizador está a seguir (following);
+Not possible to be done with only one query because we needed to use the JOIN feature which is impossible in Cassandra as found in this link: https://cassandra.apache.org/doc/latest/cassandra/data_modeling/data_modeling_rdbms.html
+
+
+// 9. Os 5 vídeos com maior rating
+Impossible to execute this query as found in this link: https://stackoverflow.com/questions/35708118/where-and-order-by-clauses-in-cassandra-cql
+
+// 10. Uma query que retorne todos os vídeos e que mostre claramente a forma pela qual estão ordenados
+Impossible to execute this query as found in this link: https://stackoverflow.com/questions/35708118/where-and-order-by-clauses-in-cassandra-cql
+
+// 11. Lista com as Tags existentes e o número de vídeos catalogados com cada uma delas
+Couldn't find a way to do it, not sure it's impossible

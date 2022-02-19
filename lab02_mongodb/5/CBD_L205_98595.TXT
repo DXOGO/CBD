@@ -1,0 +1,102 @@
+Dataset source: https://www.kaggle.com/mandeeplannister/imdb-movies-dataset
+Dataset has been cut from 46014 documents to only 7200 to reduce size
+mongoimport --db cbd --collection movies --drop --file <path/>movies.json
+
+Document Structure
+
+{
+  "_id": {
+    "$oid": "573a1398f29313caabcea315"
+  },
+  "title": "Top Gun",
+  "year": {
+    "$numberInt": "1986"
+  },
+  "runtime": {
+    "$numberInt": "110"
+  },
+  "released": {
+    "$date": {
+      "$numberLong": "516585600000"
+    }
+  },
+  "cast": [
+    "Tom Cruise",
+    "Kelly McGillis",
+    "Val Kilmer",
+    "Anthony Edwards"
+  ],
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTY3ODg4OTU3Nl5BMl5BanBnXkFtZTYwMjI1Nzg4._V1_SX300.jpg",
+  "plot": "As students at the United States Navy's elite fighter weapons school compete to be best in the class, one daring young pilot learns a few things from a civilian instructor that are not taught in the classroom.",
+  "fullplot": "Lieutenant Pete \"Maverick\" Mitchell is an expert United States Naval Aviator. When he encounters a pair of MiGs over the Persian Gulf, his wingman is clearly outflown and freaks. On almost no fuel, Maverick is able to talk him back down to the carrier. When his wingman turns in his wings, Maverick is moved up in the standings and sent to the Top Gun Naval Flying School. There he fights the attitudes of the other pilots and an old story of his father's death in combat that killed others due to his father's error. Maverick struggles to be the best pilot, stepping on the toes of his other students and in another way to Charlie Blackwood, a civilian instructor to whom he is strongly attracted.",
+  "awards": "Won 1 Oscar. Another 9 wins & 5 nominations.",
+  "lastupdated": "2015-08-23 00:18:22.953000000",
+  "type": "movie",
+  "languages": [
+    "English"
+  ],
+  "directors": [
+    "Tony Scott"
+  ],
+  "writers": [
+    "Jim Cash",
+    "Jack Epps Jr.",
+    "Ehud Yonay (magazine article \"Top Guns\")"
+  ],
+  "imdb": {
+    "rating": {
+      "$numberDouble": "6.8"
+    },
+    "votes": {
+      "$numberInt": "201161"
+    },
+    "id": {
+      "$numberInt": "92099"
+    }
+  },
+  "countries": [
+    "USA"
+  ],
+  "rated": "PG",
+  "genres": [
+    "Action",
+    "Drama",
+    "Romance"
+  ],
+  "num_mflix_comments": {
+    "$numberInt": "1"
+  },
+  "comments": [
+    {
+      "name": "Theon Greyjoy",
+      "email": "alfie_allen@gameofthron.es",
+      "movie_id": {
+        "$oid": "573a1398f29313caabcea315"
+      },
+      "text": "Delectus exercitationem dolorem dignissimos distinctio. Magni a ipsa aut repellendus. Dignissimos tempora maiores nihil maxime.",
+      "date": {
+        "$date": {
+          "$numberLong": "414254578000"
+        }
+      },
+      "_id": "573a1398f29313caabcea315-Theon Greyjoy-414272578.0"
+    }
+  ]
+}
+```
+
+## Queries using find() operator (on file find_queries.js)
+1. Search all Italian Horror movies
+2. Search all American movies of Action or Fantasy genres
+3. Search all movies from Portugal released between august 2014 and august 2016
+4. Search all movies where Leonardo DiCaprio acted but not directed in
+5. List 5 movies directed and written by Stanley Kubrick
+6. List all Thriller movies with less than 5.5 rating ordered by rating
+
+## Queries using aggregations (on file aggregate_queries.js)
+1. Average rating of Chris Evans movies
+2. Number of movies by all actors ordered descent
+3. Movies rated more than 7.0 and have only one director
+4. Average rating of movies made in 1996
+5. List directors who have at least 2 adventure films rated lower than 6.5
+6. The Fast and the Furious movie with the most comments

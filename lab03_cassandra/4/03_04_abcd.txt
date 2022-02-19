@@ -1,0 +1,148 @@
+cqlsh> CREATE KEYSPACE cbd_03_04 WITH replication = ['class': 'SimpleStrategy', 'replication_factor': 3];
+
+cqlsh> USE cbd_03_04;
+
+cqlsh:cbd_03_04> CREATE TABLE Team(
+        ...    id int,
+        ...    club_id int,
+        ...    name text,            
+        ...    players set<text>,
+        ...    coach text,
+        ...    titles set<text>,    
+        ...    PRIMARY KEY(id, name)
+        ...    ) WITH CLUSTERING ORDER BY (name ASC);
+
+
+cqlsh:cbd_03_04> CREATE TABLE Club(
+        ...    id int,
+        ...    name text,
+        ...    foundation_year timestamp,
+        ...    country text,
+        ...    modalidades list<text>, 
+        ...    PRIMARY KEY(id, name, foundation_year)
+        ...    ) WITH CLUSTERING ORDER BY (name ASC, foundation_year DESC);
+
+
+cqlsh:cbd_03_04> CREATE TABLE Player(
+        ...    id int,
+        ...    team_id int,
+        ...    name text,
+        ...    age int,
+        ...    value int,
+        ...    PRIMARY KEY(id, name)
+        ...    ) WITH CLUSTERING ORDER BY (name ASC);
+
+    
+cqlsh:cbd_03_04> CREATE TABLE Competition(
+        ...     id int,
+        ...     name text,
+        ...     teams list<text>,
+        ...     PRIMARY KEY(id, name)
+        ...     )  WITH CLUSTERING ORDER BY (name ASC);
+
+
+cqlsh:cbd_03_04> CREATE TABLE Match(
+        ...    id int,
+        ...    competition_id int,
+        ...    teams list<text>,  
+        ...    game_date timestamp,
+        ...    result text,
+        ...    PRIMARY KEY (competition_id, game_date, id)
+        ...    ) WITH CLUSTERING ORDER BY (game_date DESC);
+
+
+cqlsh:cbd_03_04> CREATE INDEX fdate ON Club(foundation_year);
+cqlsh:cbd_03_04> CREATE INDEX gdate ON Match(game_date);
+
+
+
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (1, 'SLB', '1904-12-28', 'PT', ['football', 'volleyball', 'handball', 'futsal', 'basketball', 'hockey', 'gymnastics', 'esports']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (2, 'FCP', '1893-12-28', 'PT', ['football', 'handball', 'basketball', 'futsal', 'hockey','cycling']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (3, 'CHE', '1905-03-10', 'EN', ['football']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (4, 'LIV', '1892-06-03', 'EN', ['football']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (5, 'REA', '1902-03-06', 'ES', ['football', 'basketball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (6, 'BAR', '1899-11-29', 'ES', ['football', 'handball', 'futsal', 'rugby', 'hockey']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (7, 'AJA', '1990-03-18', 'NL', ['football']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (8, 'MIL', '1899-12-16', 'IT', ['football', 'basketball', 'esports']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (9, 'ASM', '1927-01-08', 'FR', ['football', 'handball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (10, 'ZEN', '1925-05-25', 'RU', ['football', 'voleyball', 'basketball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (11, 'ZAG', '1911-04-26', 'HR', ['football', 'hockey', 'basketball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (12, 'ATL', '1903-04-26', 'ES', ['football', 'basketball', 'volleyball', 'futsal']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (13, 'BRA', '1921-01-19', 'PT', ['football', 'futsal', 'volleyball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (14, 'PSG', '1970-08-12', 'FR', ['football', 'handball', 'basketball']);
+cqlsh:cbd_03_04> INSERT INTO Club (id, name, foundation_year, country, modalidades) VALUES (15, 'BAY', '1990-02-27', 'DE', ['football', 'basketball']);
+
+
+
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (1, 1, 'Equipa Principal', 'Jorge Jesus', {'Odysseas Vlachodimos', 'Álex Grimaldo', 'Lucas Verissimo', 'Everton', 'Joao Mario', 'Pizzi', 'Rafa', 'Julian Weigl', 'Adel Taarabt', 'Everton', 'Darwin Núnez'},  {'Liga dos Campeões', 'Liga Portuguesa', 'Taça da Liga', 'Taça de Portugal', 'Campeonato de Portugal', 'Supertaça Cândido de Oliveira'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (2, 1, 'U19', 'Luís Araújo', {'Alexander Sandahl', 'Gonçalo Negrão', 'Martim Ferreira', 'João Conceição', 'Hugo Félix', 'Franculino Djú' }, {'FIFA Youth League', 'Campeonato Juniores});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (3, 2, 'Equipa Principal', 'Sérgio Conceição', {'Marchesín', 'Fábio Cardoso', 'Mbemba', 'Zaidu', 'João Mário', 'Mateus Uribe', 'Vitinha', 'Luis Díaz', 'Otávio', 'Mehdi Taremi', 'Evanilson'}, {'Taça Intercontinental', 'Taça Intercontinental', 'Liga dos Campeões', 'Europa League', 'Supertaça Europeia', 'Liga Portuguesa', 'Taça de Portugal', 'Supertaça Cândido de Oliveira', 'Campeonato de Portugal'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (4, 3, 'Equipa Principal', 'Thomas Tuchel', {'Kepa Arrizabalaga', 'Andreas Christensen', 'Malang Sarr', 'César Azpilicueta', 'Jorginho', 'Kanté', 'Saúl Ñíguez', 'Ross Barkley', 'Mateo Kovacic', 'Hakim Ziyech', 'Romelu Lukaku'}, {'Liga dos Campeões', 'Europa League', 'Supertaça Europeia', 'Liga Inglesa', 'The FA Cup', 'League Cup', 'Championship', 'FA Community Shield'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (5, 4, 'Equipa Principal', 'Jürgen Klopp', {'Alisson', 'Diogo Jota', 'Salah', 'Alisso', 'van Dijk', 'Matip', 'Tsimikas', 'Alexander-Arnold', 'Fabinho', 'Oxlade-Chamberlain', 'Henderson'}, {'Mundial de Clubes',	'Campeonato do Mundo de Clubes', 'Liga dos Campeões', 'Europa League', 'Supertaça Europeia', 'Liga Inglesa', 'The FA Cup', 'League Cup', 'Championship', 'FA Community Shield'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (6, 5, 'Equipa Principal', 'Carlo Ancelotti', {'Courtois', 'Fernández', 'Militão', 'Mendy', 'Camavinga', 'Kroos', 'Valverde', 'Hazard', 'Vinícius', 'Vázquez', 'Benzema'}, {'Campeonato do Mundo de Clubes', 'Taça Intercontinental', 'Liga dos Campeões', 'Europa League', 'Supertaça Europeia', 'Liga Espanhola', 'Copa del Rey', 'Copa de la Liga', 'Supercopa de Espana'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (7, 6, 'Equipa Principal', 'Xavi', {'ter Stegen', 'Araújo ', 'García ', 'Piqué', 'Alba', 'Busquets', 'Gavi', 'de Jong', 'Ez Abde', 'Dembélé', 'Jutglà'}, {'Campeonato do Mundo de Clubes', 'Liga dos Campeões', 'Supertaça Europeia', 'Liga Espanhola', 'Copa del Rey', 'Copa de la Liga', 'Taça de Espana'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (8, 7, 'Equipa Principal', 'Erik Ten Haag', {'Pasveer' ,'Schuurs' ,'Timber' ,'Blind' ,'Rensch' ,'Gravenberch' ,'Klaassen', 'Tadic', 'Antony', 'Berghuis', 'Haller'}, {'Taça Intercontinental' ,'Intertoto Cup' ,'Liga dos Campeões' ,'Europa League' ,'Supertaça Europeia' ,'Taça das Taças' ,'Eredivisie'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (9, 8, 'Equipa Principal', 'Stefano Pioli', {'Maignan', 'Romagnoli', 'Tomori', 'Hernández', 'Florenzi', 'Tonali', 'Kessié', 'Messias', 'Saelemaekers', 'Giroud'}, {'Campeonato do Mundo de Clubes', 'Taça Intercontinental', 'Taça Mitropa', 'Liga dos Campeões', 'Supertaça Europeia', 'Taça das Taças', 'Liga Italiana', 'Coppa Italia', 'Serie B Italiana'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (10, 12, 'Equipa Principal', 'Diego Simeone', {'Oblak', 'Hermoso', 'Felipe', 'Trippier', 'Kondogbia', 'Koke', 'de Paul', 'Lemar', 'Carrasco', 'João Félix', 'Suaréz'}, {'Taça Intercontinental', 'Europa League', 'Supertaça Europeia', 'Taça das Taças', 'Liga Espanhola', 'Copa del Rey', 'Segunda Divisão Espanhola', 'Supercopa de España'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (11, 13, 'Equipa Principal', 'Carlos Carvalhal', {'Vítor Tormena', 'Diogo Leite', 'Raúl Silva', 'Francisco Moura', 'Yan Coucampo', 'Lucas Mineiro', 'André Horta', 'Ricardo Horta', 'Lucas Piazon', 'Abel Ruiz'}, {'UEFA Intertoto Cup', 'Taça de Portugal', 'Taça da Liga', 'II Divisão'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (12, 14, 'Equipa Principal', 'Mauricio Pochettino', {'Navas', 'Kimpembe', 'Marquinhos', 'Mendes', 'Hakimi', 'Gueye', 'Herrera', 'Wijnaldum', 'Di María', 'Messi', 'Neymar'}, {'Taça das Taças', 'UEFA Intertoto Cup', 'Ligue 1', 'Coupe de France', 'Taça da Liga Francesa', 'Ligue 2', 'Trophée des Champions'});
+cqlsh:cbd_03_04> INSERT INTO Team (id, club_id, name, coach, players, titles) VALUES (13, 15, 'Equipa Principal', 'Julian Nagelsmann', {'Neuer', 'Hernández', 'Upamecano', 'Davies', 'Pavard', 'Roca', 'Musiala', 'Sané', 'Gnabry', 'Müller', 'Lewandowski'}, {'Campeonato do Mundo de Clubes', 'Taça Intercontinental', 'Liga dos Campeões', 'Europa League', 'Supertaça Europeia', 'Taça das Taças', 'Campeonato da Alemanha', '1. Bundesliga', 'DFB Pokal', 'Taça Liga Alemã', 'DFL-SuperCup'});
+
+
+
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (1, 1, 'Darwin Núnez' , 22, 32000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (2, 1, 'J. Weigl', 26, 22000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (3, 3, 'Mehdi Taremi', 29, 15000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (4, 3, 'Vitinha', 21, 12000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (5, 4, 'Jorginho', 30, 45000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (6, 4, 'Kanté', 30, 50000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (7, 5, 'Alisson', 29, 60000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (8, 5, 'Salah', 0, 000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (9, 6, 'Benzema', 34, 25000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (10, 7, 'Piqué', 34, 7500000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (11, 8, 'Haller', 27, 27000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (12, 9, 'Tomori', 24, 45000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (13, 12, 'João Félix', 22, 70000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (14, 13, 'Diogo Leite', 22, 8000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (15, 14, 'Neymar', 29, 9000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (16, 14, 'Messi', 0, 60000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (17, 15, 'Lewandowski', 33, 55000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (18, 15, 'Roca', 25, 7000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (19, 15, 'Neuer', 35, 14000000);
+cqlsh:cbd_03_04> INSERT INTO Player (id, team_id, name, age, value) VALUES (20, 15, 'Sané', 25, 70000000);
+
+
+
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (1, 1, '2021-12-08', ['MUN','BOY'], '1-1');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (2, 1, '2021-12-08', ['BAY','BAR'], '3-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (3, 2, '2021-12-09', ['CEL','BET'], '3-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (4, 3, '2021-09-30', ['TOT','MUR'], '5-1');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (5, 4, '2021-12-08', ['SLB','KYI'], '1-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (6, 5, '2021-08-29', ['BRA','VIT'], '0-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (7, 6, '2021-12-23', ['POR','PEN'], '3-1');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (8, 7, '2021-12-14', ['MCI','LEE'], '7-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (9, 8, '2021-08-13', ['MON','BAY'], '1-1');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (10, 9, '2021-12-11', ['HUL','BRI'], '2-2');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (11, 10, '2021-12-22', ['BOR','LIL'], '2-3');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (12, 11, '2021-10-18', ['AJA','CAM'], '9-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (13, 1, '2021-10-19', ['AJA','DOR'], '4-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (14, 12, '2021-10-17', ['DAR','WER'], '3-0');
+cqlsh:cbd_03_04> INSERT INTO Match (id, competition_id, game_date, teams, result) VALUES (15, 5, '2021-11-07', ['TON','MAR'], '4-2');
+
+
+
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (1, 'UEFA Champions League', ['ATL', 'REA', 'BAR', 'SEV', 'VIL', 'MCI', 'MUN', 'LIV', 'CHE', 'BAY', 'RBL', 'DOR', 'ATA', 'JUV', 'LIL', 'PSG', 'INT', 'MIL', 'SCP', 'FCP', 'SLB', 'ZEN', 'BRU', 'SAL', 'KYI', 'SHK', 'AJA', 'BES', 'SHE', 'BOY', 'MAL', 'WOL']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (2, 'UEFA Europa League', ['LEI','HAM','SOC','BET','NAP','LAZ','EIN','LEV','LYO','MAR','MON','BRA','PSV','CEL','RAN','WIE','STU','LOK','SPA','CRV','ANT','GEN','FEN','GAL','OLY','MID','BRO','PRA','ZAG','LUD','FER','WAR']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (3, 'UEFA Europa Conference League', ['LIN','MAC','HJK','ALA','GEN','PAR','ANO','FLO','ROM','BOD','ZOR','SOF','ALK','RAN','JAB','CLU','FEY','SLA','BER','HAI','COP','PAO','BRA','LRI','REN','VIT','MUR','TOT','BAS','QAR','OMO','KAI']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (4, 'UEFA Youth League', ['ATL', 'REA', 'BAR', 'SEV', 'VIL', 'MCI', 'MUN', 'LIV', 'CHE', 'BAY', 'RBL', 'DOR', 'ATA', 'JUV', 'LIL', 'PSG', 'INT', 'MIL', 'SCP', 'FCP', 'SLB', 'ZEN', 'BRU', 'SAL', 'KYI', 'SHK', 'AJA']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (5, 'Primeira Liga', ['ARO', 'SAD', 'SLB', 'BOA', 'EST', 'FAM', 'FCP', 'GIL', 'POR', 'MAR', 'MOR', 'PAC', 'CLA', 'BRA', 'SCP', 'TON', 'VIT', 'VIZ']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (6, 'Liga Portugal 2', ['SLB','FEI','RIO','PIA','CHA','FCP','PEN','MAF','NAC','AMA','TRO','LEI','VIS','VIL','COV','FAR','ACA','VAR']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (7, 'Premier League', ['MCI','LIV','CHE','ARS','HAM','TOT','MUN','WOL','LEI','CRY','BRI','VIL','SOU','BRE','EVE','LEE','WAT','BUR','NEW','NOR']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (8, 'Bundesliga', ['BAY','DOR','FRE','LEV','HOF','EIN','BER','KOL','MAI','RBL','HER','BOC','WOL','MON','AUS','STU','ARM','FUR']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (9, 'EFL Championship', ['BOU','FUL','ROV','BRO','MID','HUD','QPR','STO','NOT','COV','SHE','MIL','BLA','LUT','PRE','SWA','BIR','BRI','CAR','REA','PET','BAR','DER','HUL']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (10, 'Ligue 1', ['PSG','NIC','OLY','REN','MON','ASM','NAN','LIL','LEN','STR','ANG','BRE','LYO','REI','TRO','BOR','MET','LOR','CLE','ETI']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (11, 'Eredivisie', ['PSV','AJA','FEY','VIT','AZ','TWE','ULT','CAM','NEC','HEE','GAE','HER','WIL','RKC','ROT','SIT','ZWO','GRO']);
+cqlsh:cbd_03_04> INSERT INTO Competition (id, name, teams) VALUES (12, '2 Bundesliga', ['PAU','DAR','HAM','SCH','NUR','HEI','WER','JAH','PAD','KAR','DYN','LIE','DUS','ROS','HAN','SAN','AUE','ING']);
+
+
+

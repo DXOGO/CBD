@@ -1,0 +1,109 @@
+# CBD – Lab201 – Diogo Cruz
+
+Database: physical container for collections. Each database gets its own set of files on the file system. A single MongoDB server typically has multiple databases.
+
+Collection: group of MongoDB documents. Collections do not enforce a schema. Documents within a collection can have different fields. Typically, all documents in a 	collection are of similar or related purpose.
+
+Document: set of key-value pairs. Documents have dynamic schema. Dynamic schema means that documents in the same collection do not need to have the same set of fields or structure, and common fields in a collection's documents may hold different types of data.
+
+Database Server and Client: mongod
+
+Advantages of MongoDB:
+	- Schema less
+	- Structure of a Simple Object is clear
+	- No complex 'join's
+	- Supports dynamic queries on documents using a document-based query language that's nearly as powerful as SQL
+	- Easy of scale-out
+	- Uses internal memory for storing the (windowed) working set, enabling faster access of data
+	- Conversion/mapping of application objects to database objects not needed
+
+Check existing databases
+ > show dbs
+  admin	0.000GB
+  cbd  	0.001GB
+  config	0.000GB
+  local	0.000GB	
+  sales	0.000GB
+
+Create/switch to DB
+ > use someDB
+
+See wich DB we're using
+ > db
+
+Drops the database being currently used
+ > db.dropDatabase()
+ 
+Create a collection
+ > db.createCollection("collection")
+
+Show all collections in the current DB
+ > show collections
+  collection
+ 
+Drop collection
+ > db.<collection_name>.drop()
+ 
+See how many items in collection
+ > db.<collection_name>.count()
+ 
+Insert data in collection
+ > db.<collection_name>.insert({
+    _id: 0,
+    name: 'Dxogo', 
+    description: 'Testing MongoDB'
+  })
+  
+Insert multiple info 
+  > db.<collection_name>.insert([
+  {
+    _id: 0,
+    name: 'Dxogo', 
+    description: 'Testing MongoDB'
+  }
+   _id: 1,
+    name: 'Leitono', 
+    description: 'Testing MongoDB too'
+  ])
+  
+To find data in collection
+ > db.<collection_name>.find()
+  { _id: 0, name: 'Dxogo', description: 'Testing MongoDB' }
+  { _id: 1, name: 'Leitono', description: 'Testing MongoDB too' }
+  
+To find specific item we can use a specific parameter from the document
+ > db.<collection_name>.find({"name"} : Dxogo)
+  { _id: 0, name: 'Dxogo', description: 'Testing MongoDB' }
+  
+To only show certain information
+ > db.<collection_name>.find({} : {name: 1})	# shows only id and name
+   { _id: 0, name: 'Dxogo' }
+   { _id: 1, name: 'Leitono' }
+   
+// There are also commands for querying **Greater than**, **Lesser than**, **Not Equals**, etc etc
+To find data using 'Greater than', 'Lesser than', 'Not Equal', etc
+ > db.<collection_name>.find({"_id": {$gt: 0}}) 	# documents with "_id" > 0
+  { _id: 1, name: 'Leitono', description: 'Testing MongoDB too' }
+
+Update field in document
+ > db.<collection_name>.update({'name':'Dxogo'}, {$set : {'description':'Updating this'}})
+
+Now if we do this, we'll have
+ > db.<collection_name>.find()
+  { _id: 0, name: 'Dxogo', description: 'Updating this' }
+  { _id: 1, name: 'Leitono', description: 'Testing MongoDB too' }
+  
+We can also update using the commands for **Greater than**, **Lesser than**, **Not Equals**, etc.
+
+To remove document(s) based on a specific field 
+ > db.<collection_name>.remove({'name' : 'Dxogo'}, 1)
+
+--------------------------------------------------------------------------------------------------
+
+Corremos no terminal
+ $ mongoimport --db cbd --collection restaurants --drop --file ~/Desktop/3ANO/SEMESTRE1/CBD/Praticas/Lab02_98595/restaurants.json 
+Para importar os dados para uma colleciton chamada 'restaurants' dentro da DB 'cbd' e corremos ' $ mongo '
+Entramos na db usando ' > use cbd' e vemos 'restaurants' com o comando ' > show collections'
+Ao fazer '> db.restaurants.find().pretty()' podemos ver a lista completa organizada
+
+

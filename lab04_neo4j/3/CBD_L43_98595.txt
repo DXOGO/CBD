@@ -1,0 +1,69 @@
+// Diogo Cruz, nmec 98595
+
+// alinea a) Tendo por base o conteúdo do ficheiro git_selection.csv, modele as entidades e relações necessárias para carregar o seu conteúdo no net4j.
+
+// Entidade 'Worker' vai ter as properties: 'num', 'svn_id', 'real_name', 'organization' 
+// Entidade 'Project' vai ter: 'project_name'
+// Vai existir a relação 'WORKS_ON' que vai ter um 'role' ((w:Worker)-[:WORKS ON]->(p:Project))
+
+// alinea b) Crie a base de dados github. Copie o ficheiro para a pasta import desta base de dados.
+
+LOAD CSV WITH HEADERS FROM 'file:///git_selection.csv' AS row
+MERGE (w:Worker {num: toInteger(row.num), svn_id: row.svn_id, real_name: row.real_name, organization: row.organization})
+MERGE (p:Project {name: row.project_name})
+MERGE (w)-[r:WORKS_ON {role: row.role_on_project}]->(p);
+
+// alinea c) Construa expressões Cypher para fornecer a seguinte informação:
+
+// 1. Liste a informação de cada utilizador.
+match (w:Worker)
+return w as Worker
+
+
+// 2. Liste o nome de cada utilizador.
+match (w:Worker)
+return distinct(w.real_name) as Name
+
+
+// 3. Liste a informação de cada projeto, no qual tenha participado pelo menos um utilizador.
+match (w:Worker)-[:WORKS_ON]->(p:Project)
+return distinct(p) as Project
+
+
+// 4. Liste os utilizadores e total de projetos em que cada um colabora.
+match (w:Worker)-[r:WORKS_ON]->(p:Project)
+with w.real_name as name, count(p) as totalProjects
+return name, totalProjects
+
+
+// 5. Liste os utilizadores e do total de projetos em que cada colabora ordenados por ordem decrescente do total.
+match (w:Worker)-[r:WORKS_ON]->(p:Project)
+with w.real_name as name, count(p) as totalProjects
+order by totalProjects desc
+return name, totalProjects
+
+
+// 6. Liste projetos e total de membros em cada projeto.
+MATCH (w:Worker)-[r:WORKS_ON]->(p:Project)
+WITH p.name as Project, count(w) as totalMembers
+RETURN Project, totalMembers
+
+
+// 7. Liste projetos e total de membros com a role "Committer" em cada projeto.
+match (w:Worker)-[r:WORKS_ON {role : "Committer"}]->(p:Project)
+with p.name as Project, count(r.role) as totalCommitters
+return Project, totalCommitters
+
+
+// 8. Liste todos os utilizadores que participaram nos mesmo projetos do que o utilizador "atm" (id). Mostre os atributos: nome de "atm", nome utilizador 2, nome do projeto.
+match (w1:Worker)-[:WORKS_ON]->(p:Project)<-[:WORKS_ON]-(w2:Worker)
+where w1.svn_id = "atm" and id(w1) < id(w2)
+return w1.real_name as Name1, w2.real_name as Name2, p.name as Project
+
+
+// 9. Liste todos os utilizadores que participaram com a role "Committer" em projetos em que o utilizador "atm" (id1) participou com a role "PMC".
+match (w1:Worker {svn_id: "atm"})-[r1:WORKS_ON {role: "PMC"}]->(p:Project)<-[r2:WORKS_ON {role:"Committer"}]-(w2:Worker)
+WHERE id(w1) < id(w2)
+RETURN w2 as Worker2
+
+

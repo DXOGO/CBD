@@ -1,0 +1,32 @@
+    {"name": "Tutorial", "video_id": 8, "id": 27}
+   {"name": "Cassandra", "video_id": 8, "id": 26}
+  {"name": "Microsoft", "video_id": 10, "id": 29}
+        {"name": "Funk", "video_id": 7, "id": 25}
+   {"name": "Basketball", "video_id": 3, "id": 6}
+     {"name": "Gaming", "video_id": 10, "id": 28}
+       {"name": "Water", "video_id": 6, "id": 23}
+    {"name": "Portugal", "video_id": 4, "id": 12}
+        {"name": "Tech", "video_id": 5, "id": 16}
+        {"name": "Tech", "video_id": 8, "id": 17}
+        {"name": "Tech", "video_id": 9, "id": 18}
+       {"name": "Tech", "video_id": 10, "id": 19}
+        {"name": "Goals", "video_id": 2, "id": 5}
+ {"name": "Interesting", "video_id": 6, "id": 24}
+       {"name": "Music", "video_id": 4, "id": 10}
+       {"name": "Music", "video_id": 7, "id": 11}
+    {"name": "Unboxing", "video_id": 5, "id": 20}
+    {"name": "Unboxing", "video_id": 9, "id": 21}
+    {"name": "Airplane", "video_id": 9, "id": 30}
+       {"name": "Falcao", "video_id": 2, "id": 4}
+      {"name": "iPhone", "video_id": 5, "id": 22}
+          {"name": "GSW", "video_id": 3, "id": 9}
+          {"name": "NBA", "video_id": 3, "id": 7}
+       {"name": "Apple", "video_id": 5, "id": 14}
+       {"name": "Apple", "video_id": 9, "id": 15}
+  {"name": "Steph Curry", "video_id": 3, "id": 8}
+     {"name": "Patriot", "video_id": 4, "id": 13}
+      {"name": "Benfica", "video_id": 1, "id": 1}
+     {"name": "Football", "video_id": 1, "id": 2}
+     {"name": "Football", "video_id": 2, "id": 3}
+
+(30 rows)

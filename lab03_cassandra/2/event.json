@@ -1,0 +1,12 @@
+  {"video_id": 5, "user_email": "bot9@bot.pt", "id": 6, "comment": "2021-12-03 10:43:09.043Z", "time": 65, "type": 1}
+  {"video_id": 1, "user_email": "bot0@bot.pt", "id": 2, "comment": "2021-12-03 10:43:09.018Z", "time": 33, "type": 0}
+ {"video_id": 1, "user_email": "bot3@bot.pt", "id": 10, "comment": "2021-12-03 10:43:10.444Z", "time": 55, "type": 0}
+ {"video_id": 1, "user_email": "bot5@bot.pt", "id": 3, "comment": "2021-12-03 10:43:09.027Z", "time": 675, "type": 1}
+  {"video_id": 8, "user_email": "bot5@bot.pt", "id": 9, "comment": "2021-12-03 10:43:09.055Z", "time": 87, "type": 2}
+  {"video_id": 2, "user_email": "bot4@bot.pt", "id": 1, "comment": "2021-12-03 10:43:08.998Z", "time": 50, "type": 0}
+ {"video_id": 4, "user_email": "bot5@bot.pt", "id": 4, "comment": "2021-12-03 10:43:09.032Z", "time": 123, "type": 2}
+  {"video_id": 7, "user_email": "bot1@bot.pt", "id": 8, "comment": "2021-12-03 10:43:09.050Z", "time": 12, "type": 0}
+ {"video_id": 9, "user_email": "bot2@bot.pt", "id": 5, "comment": "2021-12-03 10:43:09.039Z", "time": 234, "type": 2}
+  {"video_id": 3, "user_email": "bot8@bot.pt", "id": 7, "comment": "2021-12-03 10:43:09.046Z", "time": 45, "type": 1}
+
+(10 rows)

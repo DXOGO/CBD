@@ -1,0 +1,115 @@
+
+
+1. List all different job titles
+MATCH (j:Job) RETURN DISTINCT(j.job_title) AS Job
+
+--- Job                  ---
+ Data Scientist             
+ Healthcare Data Scientist             
+ Research Scientist             
+ Staff Data Scientist - Technology             
+ Data Analyst             
+ Data Engineer I             
+ Scientist I/II, Biology             
+ Customer Data Scientist             
+ Data Scientist - Health Data Analytics             
+ Senior Data Scientist / Machine Learning             
+...
+
+
+2. List all jobs that have an anual salary of over $100K
+MATCH (j:Job)-[r:WORKS_IN]->(c:Company) with c,j where j.salary > 100000 RETURN c.name as Company, j.job_title as Job, j.salary as AnualSalary
+
+--- Company                                     Job                          AnualSalary                  ---
+ University of Maryland Medical System 3.4   Healthcare Data Scientist          112000             
+ Affinity Solutions 2.9                      Data Scientist                     143000             
+ CyrusOne 3.4                                Data Scientist                     119000             
+ Logic20/20 3.8                              Data Scientist                     142000             
+ Google 4.6                                  Data Scientist                     160000             
+ Wish 3.5                                    Data Scientist                     201000             
+ ManTech 4.1                                 Data Scientist                     106000             
+ Walmart 3.2                                 Staff Data Scientist - Technology  172000             
+ Takeda Pharmaceuticals 3.7                  Data Scientist                     144000             
+ Audible 3.6                                 Data Engineer I                    190000             
+...
+
+
+3. List 5 highest paying salaries in the company Pfizer
+MATCH (j:Job)-[r:WORKS_IN]->(c:Company {name : 'Pfizer 4.0'}) with j,c order by j.salary desc limit 5 RETURN j.job_title as Job, j.salary as AnualSalary
+
+--- Job                                         AnualSalary                  ---
+ Senior Manager, Epidemiologic Data Scientist     210000             
+ Digital Health Data Scientist                    110000             
+ Digital Health Data Scientist                    110000             
+ Clinical Data Scientist                          105000             
+ Clinical Data Scientist                          105000             
+
+
+4. List industries that belong to the 'Media' sector
+MATCH (s:Sector)<-[r:BELONGS_TO]-(i:Industry) WHERE s.name = 'Media' RETURN i.type AS Industry
+
+--- Industry                  ---
+ TV Broadcast & Cable Networks             
+ Motion Picture Production & Distribution             
+ Video Games             
+
+
+5. List information from the oldest company, including industry and sector
+MATCH (c:Company)-[:SPECIALIZES]->(i:Industry)-[:BELONGS_TO]->(s:Sector) WITH i, s, c, c.founded as age ORDER BY age asc LIMIT 1 RETURN c.name as Company, age as Foundation, i.type as Industry, s.name as Sector
+
+--- Company                   Foundation                Industry                    Sector                  ---
+ Sotheby's 3.6                  1744              Auctions & Galleries              Retail             
+
+
+6. List companies in the 'Biotech' sector that start their name with an 'A
+MATCH (c:Company)-[:SPECIALIZES]->(i:Industry)-[:BELONGS_TO]->(s:Sector) WHERE c.name STARTS WITH 'A' AND s.name CONTAINS 'Biotech' RETURN c.name as Company, s.name as Sector
+
+--- Company                                 Sector                  ---
+ Advanced BioScience Laboratories 2.7   Biotech & Pharmaceuticals             
+ Acceleron Pharma 4.4                   Biotech & Pharmaceuticals             
+ Audentes Therapeutics 2.9              Biotech & Pharmaceuticals             
+ AstraZeneca 3.9                        Biotech & Pharmaceuticals             
+ Agios Pharmaceuticals 3.8              Biotech & Pharmaceuticals             
+
+
+7. List all different jobs in the 'Finance' Sector
+MATCH (j:Job)-[:WORKS_IN]->(c:Company)-[:SPECIALIZES]->(i:Industry)-[:BELONGS_TO]->(s:Sector) WHERE s.name = 'Finance' RETURN j.job_title as Job, j.salary as AnualSalary, c.name as Company
+
+--- Job                                               AnualSalary              Company                  ---
+ VP, Data Science                                       166000              PennyMac 3.2             
+ VP, Data Science                                       166000              PennyMac 3.2             
+ Data Engineer                                          132000              PennyMac 3.2             
+ Technology-Minded, Data Professional Opportunities     101000              Veterans United Home Loans 4.7             
+ Analytics - Business Assurance Data Analyst            55000               GreatAmerica Financial Services 4.6             
+ Data Scientist                                         111000              Biz2Credit Inc 4.0             
+ Corporate Risk Data Analyst (SQL Based)                77000               Associated Banc-Corp 3.8             
+ Information Security Data Analyst                      74000               OceanFirst Financial 4.3             
+ Associate, Data Science, Internal Audit                82000               Santander 3.1             
+ Data Scientist                                         126000              PeoplesBank 4.2             
+...
+
+
+8. List all job positions in the company 'Autodesk 4.0' and salary
+MATCH (j:Job)-[:WORKS_IN]->(c:Company {name : 'Autodesk 4.0'}) RETURN j.job_title as Job, j.salary as AnualSalary
+
+--- Job                                                 AnualSalary                  ---
+ Data Engineer                                            140000             
+ Principal Data Engineer, Data Platform & Insights        209000             
+ Senior Data Scientist                                    185000             
+ Senior Data Scientist                                    185000             
+
+
+9. List number of job positions there are in the company 'Autodesk 4.0' and the average salary
+MATCH (j:Job)-[:WORKS_IN]->(c:Company {name : 'Autodesk 4.0'}) WITH count(j.job_title) AS JobCount, avg(j.salary) AS AverageSalary  RETURN JobCount, AverageSalary
+
+--- JobCount                   AverageSalary                  ---
+        4                        179750.0             
+
+
+10. List top 3 jobs with the best rating and their companies, ordered by rating descending
+MATCH (j:Job)-[:WORKS_IN]->(c:Company) WITH j, c ORDER BY j.rating DESC LIMIT 3 RETURN j.job_title as Job, j.rating as Rating, c.name as Company
+
+--- Job                     Rating                   Company                  ---
+ Data Engineer               5.0              Gridiron IT 5.0             
+ Data Scientist              5.0              Royce Geospatial 5.0             
+ Revenue Analytics Manager   4.8              HOVER 4.8             

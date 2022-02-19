@@ -1,0 +1,227 @@
+alinea) -------------------------------------------------------------------------------------
+
+cqlsh:cbd_03_02> CREATE KEYSPACE cbd_03_02 WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
+
+cqlsh:cbd_03_02> USE cbd_03_02;
+
+1.Gestão de utilizadores: entre outros, registar o username, nome, email, selo temporal de registo na plataforma;
+cqlsh:cbd_03_02> CREATE TABLE user(username text, name text, email text PRIMARY KEY, registration_date timestamp);
+
+2. Gestão de vídeos: entre outros, registar o autor da partilha, nome do vídeo, descrição, uma ou mais etiquetas (tag) e selo temporal de upload/partilha;
+4. Gestão de vídeo followers
+cqlsh:cbd_03_02> CREATE TABLE video(
+        ... id int,
+        ... name text,
+        ... uploader_email text,
+        ... description text,
+        ... tag set<text>,
+        ... follower_emails set<text>,
+        ... upload_date timestamp,
+        ... PRIMARY KEY(id, uploader_email, upload_date)
+        ... ) WITH CLUSTERING ORDER BY (uploader_email ASC, upload_date DESC);
+
+3. Gestão de comentários: realizados para um vídeo em determinado momento temporal e tem como autor um utilizador;
+cqlsh:cbd_03_02> CREATE TABLE videoComment(
+        ... id int,
+        ... video_id int,
+        ... reviewer_email text,
+        ... comment text,
+        ... creation_date timestamp,
+        ... PRIMARY KEY (video_id, creation_date, id)
+        ... ) WITH CLUSTERING ORDER BY (creation_date DESC);
+
+5. Registo de eventos: por vídeo e utilizador e podem ser do tipo play/pause/stop, incluindo o registo temporal do evento e o momento (temporal) em que ocorre no vídeo.
+Por exemplo, o utilizador XPTO fez play no vídeo YGZ às 2:35:54 do dia 2 de outubro de 2017,ao 300 segundo de tempo do vídeo;
+cqlsh:cbd_03_02> CREATE TABLE event(
+        ... id int,
+        ... video_id int,
+        ... user_email text ,
+        ... creation_date timestamp,
+        ... type int,
+        ... time int,
+        ... PRIMARY KEY(video_id, user_email, id)
+        ... );
+
+6. Rating de vídeos: valor inteiro de 1-5, por vídeo e não necessita de registo do autor.
+cqlsh:cbd_03_02> CREATE TABLE rating( id int, video_id int, rating int, PRIMARY KEY (video_id, id) );
+
+7. Permitir a pesquisa de todos os vídeos de determinado email de autor
+cqlsh:cbd_03_02> CREATE TABLE searchByUploader(
+        ... id int,
+        ... name text,
+        ... uploader_email text,
+        ... description text,
+        ... tag set<text>,
+        ... follower_emails set<text>,
+        ... upload_date timestamp,
+        ... PRIMARY KEY(id, uploader_email, upload_date)
+        ... );
+        
+7. Permitir a pesquisa de todos os vídeos de determinado nome de autor
+cqlsh:cbd_03_02> CREATE TABLE searchByUsername(
+        ... id int,
+        ... name text,
+        ... uploader_user text,
+        ... description text,
+        ... tag set<text>,
+        ... follower_emails set<text>,
+        ... upload_date timestamp,
+        ... PRIMARY KEY(id, uploader_user, upload_date)
+        ... );
+
+8. Permitir a pesquisa de comentários por utilizador, ordenado inversamente pela data; 
+cqlsh:cbd_03_02> CREATE TABLE reviewerComment(
+        ... id int,
+        ... video_id int,
+        ... reviewer_email text,
+        ... comment text,
+        ... creation_date timestamp,
+        ... PRIMARY KEY(reviewer_email, creation_date, id)
+        ... ) WITH CLUSTERING ORDER BY (creation_date DESC);
+
+        
+
+alinea b) -------------------------------------------------------------------------------------
+
+// user
+insert into user (username, name, email, registration_date) values ('bot0', 'bot zero', 'bot0@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot1', 'bot one', 'bot1@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot2', 'bot two', 'bot2@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot3', 'bot three', 'bot3@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot4', 'bot four', 'bot4@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot5', 'bot five', 'bot5@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot6', 'bot six', 'bot6@bot.pt',toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot7', 'bot seven', 'bot7@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot8', 'bot eight', 'bot8@bot.pt', toTimestamp(now()));
+insert into user (username, name, email, registration_date) values ('bot9', 'bot nine', 'bot9@bot.pt', toTimestamp(now()));
+
+// video
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (1, 'Benfica 20/21 Highlights', 'bot1@bot.pt', 'Best Benfica moments from the season', {'Benfica','Football'}, {'bot0@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (2, 'Falcao Best Goals', 'bot5@bot.pt', 'Best career goals from Ramadel Falcao', {'Falcao', 'Football', 'Goals' }, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (3, 'Steph Curry is UNREAL!', 'bot9@bot.pt', 'Steph Curry Highlights against the Nets', {'Basketball', 'NBA', 'Steph Curry', 'GSW'}, {'bot8@bot.pt', 'bot0@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (4, 'Portugal Anthem', 'bot0@bot.pt', 'Portugals offical national anthem', {'Music', 'Portugal', 'Patriot'}, {'bot1@bot.pt', 'bot2@bot.pt', 'bot3@bot.pt', 'bot4@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (5, 'iPhone 13 2021 Unboxing and Review', 'bot6@bot.pt', 'The new replacement of the iPhone 12', {'Apple', 'Tech', 'Unboxing', 'iPhone'}, {'bot5@bot.pt', 'bot0@bot.pt', 'bot9@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (6, 'Just drinking water', 'bot2@bot.pt', 'Literally a video of me drinking a cup of water', {'Water', 'Interesting'}, {}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (7, 'Silk Sonic Listening Party', 'bot2@bot.pt', 'Incredible album from Anderson .Paak and Bruno Mars', {'Music', 'Funk'}, {'bot1@bot.ptt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (8, 'What is Cassandra and how does it work?', 'bot5@bot.pt', 'Quick tutorial to get you started', {'Tech', 'Cassandra', 'Tutorial'}, {'bot9@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (9, 'iPhone 12 Unboxing', 'bot3@bot.pt', 'ASMR unboxing', {'Apple', 'Tech', 'Unboxing'}, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into video (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (10, 'Xbox One Review', 'bot5@bot.pt', 'Unboxing the new console', {'Tech', 'Gaming', 'Microsoft'}, {}, toTimestamp(now()));
+
+
+// comments
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (1, 2, 'bot4@bot.pt', 'What a player', '2021-12-25');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (2, 3, 'bot0@bot.pt', '3PT GOD', '2021-12-24');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (3, 1, 'bot0@bot.pt', 'Best club in the world', '2021-12-23');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (4, 1, 'bot2@bot.pt', 'Awesome', '2021-12-29');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (5, 5, 'bot5@bot.pt', 'Great phone!', '2021-12-07');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (6, 7, 'bot1@bot.pt', 'Great music', '2021-12-05');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (7, 4, 'bot1@bot.pt', 'Incredible', '2021-12-04');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (8, 1, 'bot3@bot.pt', 'I miss Jonas', '2021-12-26');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (9, 9, 'bot4@bot.pt', 'Thank you for this', '2021-12-23');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (10, 10, 'bot7@bot.pt', 'Great console!', '2021-12-22');
+
+// events (0-play, 1-pause, 2-stop)
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (1, 2, 'bot4@bot.pt', toTimestamp(now()), 0, 50);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (2, 1, 'bot0@bot.pt', toTimestamp(now()), 0, 33);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (3, 1, 'bot5@bot.pt', toTimestamp(now()), 1, 675);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (4, 4, 'bot5@bot.pt', toTimestamp(now()), 2, 123);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (5, 9, 'bot2@bot.pt', toTimestamp(now()), 2, 234);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (6, 5, 'bot9@bot.pt', toTimestamp(now()), 1, 65);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (7, 3, 'bot8@bot.pt', toTimestamp(now()), 1, 45);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (8, 7, 'bot1@bot.pt', toTimestamp(now()), 0, 12);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (9, 8, 'bot5@bot.pt', toTimestamp(now()), 2, 87);
+insert into event (id, video_id, user_email, creation_date, type, time) VALUES (10, 1, 'bot3@bot.pt', toTimestamp(now()), 0, 55);
+
+// ratings
+insert into rating (id, video_id, rating) VALUES (1, 1, 3);
+insert into rating (id, video_id, rating) VALUES (2, 3, 5);
+insert into rating (id, video_id, rating) VALUES (3, 5, 1);
+insert into rating (id, video_id, rating) VALUES (4, 7, 3);
+insert into rating (id, video_id, rating) VALUES (5, 2, 4);
+insert into rating (id, video_id, rating) VALUES (6, 2, 5);
+insert into rating (id, video_id, rating) VALUES (7, 5, 2);
+insert into rating (id, video_id, rating) VALUES (8, 7, 2);
+insert into rating (id, video_id, rating) VALUES (9, 9, 2);
+insert into rating (id, video_id, rating) VALUES (10, 3, 2);
+
+// para procura por uploader 
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (1, 'Benfica 20/21 Highlights', 'bot1@bot.pt', 'Best Benfica moments from the season', {'Benfica','Football'}, {'bot0@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (2, 'Falcao Best Goals', 'bot5@bot.pt', 'Best career goals from Ramadel Falcao', {'Falcao', 'Football', 'Goals' }, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (3, 'Steph Curry is UNREAL!', 'bot9@bot.pt', 'Steph Curry Highlights against the Nets', {'Basketball', 'NBA', 'Steph Curry', 'GSW'}, {'bot8@bot.pt', 'bot0@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (4, 'Portugal Anthem', 'bot0@bot.pt', 'Portugals offical national anthem', {'Music', 'Portugal', 'Patriot'}, {'bot1@bot.pt', 'bot2@bot.pt', 'bot3@bot.pt', 'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (5, 'iPhone 13 2021 Unboxing and Review', 'bot6@bot.pt', 'The new replacement of the iPhone 12', {'Apple', 'Tech', 'Unboxing', 'iPhone'}, {'bot5@bot.pt', 'bot0@bot.pt', 'bot9@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (6, 'Just drinking water', 'bot2@bot.pt', 'Literally a video of me drinking a cup of water', {'Water', 'Interesting'}, {}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (7, 'Silk Sonic Listening Party', 'bot2@bot.pt', 'Incredible album from Anderson .Paak and Bruno Mars', {'Music', 'Funk'}, {'bot1@bot.ptt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (8, 'What is Cassandra and how does it work?', 'bot5@bot.pt', 'Quick tutorial to get you started', {'Tech', 'Cassandra', 'Tutorial'}, {'bot9@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (9, 'iPhone 12 Unboxing', 'bot3@bot.pt', 'ASMR unboxing', {'Apple', 'Tech', 'Unboxing'}, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUploader (id, name, uploader_email, description, tag, follower_emails, upload_date) VALUES (10, 'Xbox One Review', 'bot5@bot.pt', 'Unboxing the new console', {'Tech', 'Gaming', 'Microsoft'}, {}, toTimestamp(now()));
+
+
+// para procura por username
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (1, 'Benfica 20/21 Highlights', 'bot1', 'Best Benfica moments from the season', {'Benfica','Football'}, {'bot0@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (2, 'Falcao Best Goals', 'bot5', 'Best career goals from Ramadel Falcao', {'Falcao', 'Football', 'Goals' }, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (3, 'Steph Curry is UNREAL!', 'bot9', 'Steph Curry Highlights against the Nets', {'Basketball', 'NBA', 'Steph Curry', 'GSW'}, {'bot8@bot.pt', 'bot0@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (4, 'Portugal Anthem', 'bot0', 'Portugals offical national anthem', {'Music', 'Portugal', 'Patriot'}, {'bot1@bot.pt', 'bot2@bot.pt', 'bot3@bot.pt', 'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (5, 'iPhone 13 2021 Unboxing and Review', 'bot6@bot.pt', 'The new replacement of the iPhone 12', {'Apple', 'Tech', 'Unboxing', 'iPhone'}, {'bot5@bot.pt', 'bot0@bot.pt', 'bot9@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (6, 'Just drinking water', 'bot2', 'Literally a video of me drinking a cup of water', {'Water', 'Interesting'}, {}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (7, 'Silk Sonic Listening Party', 'bot2', 'Incredible album from Anderson .Paak and Bruno Mars', {'Music', 'Funk'}, {'bot1@bot.ptt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (8, 'What is Cassandra and how does it work?', 'bot5', 'Quick tutorial to get you started', {'Tech', 'Cassandra', 'Tutorial'}, {'bot9@bot.pt', 'bot2@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (9, 'iPhone 12 Unboxing', 'bot3', 'ASMR unboxing', {'Apple', 'Tech', 'Unboxing'}, {'bot4@bot.pt'}, toTimestamp(now()));
+insert into searchByUsername (id, name, uploader_user, description, tag, follower_emails, upload_date) VALUES (10, 'Xbox One Review', 'bot5', 'Unboxing the new console', {'Tech', 'Gaming', 'Microsoft'}, {}, toTimestamp(now()));
+
+// pesquisa por comentarios
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (1, 2, 'bot4@bot.pt', 'What a player', '2021-12-25');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (2, 3, 'bot0@bot.pt', '3PT GOD', '2021-12-24');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (3, 1, 'bot0@bot.pt', 'Best club in the world', '2021-12-23');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (4, 1, 'bot2@bot.pt', 'Awesome', '2021-12-29');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (5, 5, 'bot5@bot.pt', 'Great phone!', '2021-12-07');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (6, 7, 'bot1@bot.pt', 'Great music', '2021-12-05');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (7, 4, 'bot1@bot.pt', 'Incredible', '2021-12-04');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (8, 1, 'bot3@bot.pt', 'I miss Jonas', '2021-12-26');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (9, 9, 'bot4@bot.pt', 'Thank you for this', '2021-12-23');
+insert into videoComment (id, video_id, reviewer_email, comment, creation_date) VALUES (10, 10, 'bot7@bot.pt', 'Great console!', '2021-12-22');
+
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (1, 2, 'bot4@bot.pt', 'What a player', '2021-12-25');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (2, 3, 'bot0@bot.pt', '3PT GOD', '2021-12-24');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (3, 1, 'bot0@bot.pt', 'Best club in the world', '2021-12-23');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (4, 1, 'bot2@bot.pt', 'Awesome', '2021-12-29');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (5, 5, 'bot5@bot.pt', 'Great phone!', '2021-12-07');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (6, 7, 'bot1@bot.pt', 'Great music', '2021-12-05');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (7, 4, 'bot1@bot.pt', 'Incredible', '2021-12-04');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (8, 1, 'bot3@bot.pt', 'I miss Jonas', '2021-12-26');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (9, 9, 'bot4@bot.pt', 'Thank you for this', '2021-12-23');
+insert into reviewerComment (id, video_id, reviewer_email, comment, creation_date) VALUES (10, 10, 'bot7@bot.pt', 'Great console!', '2021-12-22');
+
+insert into tagByVideo (id, name, video_id) VALUES (1, 'Benfica', 1);
+insert into tagByVideo (id, name, video_id) VALUES (2, 'Football', 1);
+insert into tagByVideo (id, name, video_id) VALUES (3, 'Football', 2);
+insert into tagByVideo (id, name, video_id) VALUES (4, 'Falcao', 2);
+insert into tagByVideo (id, name, video_id) VALUES (5, 'Goals', 2);
+insert into tagByVideo (id, name, video_id) VALUES (6, 'Basketball', 3);
+insert into tagByVideo (id, name, video_id) VALUES (7, 'NBA', 3);
+insert into tagByVideo (id, name, video_id) VALUES (8, 'Steph Curry', 3);
+insert into tagByVideo (id, name, video_id) VALUES (9, 'GSW', 3);
+insert into tagByVideo (id, name, video_id) VALUES (10, 'Music', 4);
+insert into tagByVideo (id, name, video_id) VALUES (11, 'Music', 7);
+insert into tagByVideo (id, name, video_id) VALUES (12, 'Portugal', 4);
+insert into tagByVideo (id, name, video_id) VALUES (13, 'Patriot', 4);
+insert into tagByVideo (id, name, video_id) VALUES (14, 'Apple', 5);
+insert into tagByVideo (id, name, video_id) VALUES (15, 'Apple', 9);
+insert into tagByVideo (id, name, video_id) VALUES (16, 'Tech', 5);
+insert into tagByVideo (id, name, video_id) VALUES (17, 'Tech', 8);
+insert into tagByVideo (id, name, video_id) VALUES (18, 'Tech', 9);
+insert into tagByVideo (id, name, video_id) VALUES (19, 'Tech', 10);
+insert into tagByVideo (id, name, video_id) VALUES (20, 'Unboxing', 5);
+insert into tagByVideo (id, name, video_id) VALUES (21, 'Unboxing', 9);
+insert into tagByVideo (id, name, video_id) VALUES (22, 'iPhone', 5);
+insert into tagByVideo (id, name, video_id) VALUES (23, 'Water', 6);
+insert into tagByVideo (id, name, video_id) VALUES (24, 'Interesting', 6);
+insert into tagByVideo (id, name, video_id) VALUES (25, 'Funk', 7);
+insert into tagByVideo (id, name, video_id) VALUES (26, 'Cassandra', 8);
+insert into tagByVideo (id, name, video_id) VALUES (27, 'Tutorial', 8);
+insert into tagByVideo (id, name, video_id) VALUES (28, 'Gaming', 10);
+insert into tagByVideo (id, name, video_id) VALUES (29, 'Microsoft', 10);
+insert into tagByVideo (id, name, video_id) VALUES (30, 'Airplane', 9);
+
+----------------------------------------------------------------------
+To export to JSON (in <cassandra>/bin path): ./cqlsh -e "select JSON * from cbd_03_02.<table_name>" | awk 'NR>3 {print $0}' > <table_name>.json

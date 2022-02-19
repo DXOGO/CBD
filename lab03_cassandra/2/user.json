@@ -1,0 +1,12 @@
+   {"email": "bot2@bot.pt", "name": "bot two", "registration_date": "2021-12-03 09:55:04.273Z", "username": "bot2"}
+   {"email": "bot1@bot.pt", "name": "bot one", "registration_date": "2021-12-03 09:55:04.269Z", "username": "bot1"}
+  {"email": "bot0@bot.pt", "name": "bot zero", "registration_date": "2021-12-03 09:55:04.226Z", "username": "bot0"}
+  {"email": "bot4@bot.pt", "name": "bot four", "registration_date": "2021-12-03 09:55:04.280Z", "username": "bot4"}
+  {"email": "bot9@bot.pt", "name": "bot nine", "registration_date": "2021-12-03 09:55:17.164Z", "username": "bot9"}
+ {"email": "bot8@bot.pt", "name": "bot eight", "registration_date": "2021-12-03 09:55:04.293Z", "username": "bot8"}
+ {"email": "bot7@bot.pt", "name": "bot seven", "registration_date": "2021-12-03 09:55:04.290Z", "username": "bot7"}
+   {"email": "bot6@bot.pt", "name": "bot six", "registration_date": "2021-12-03 09:55:04.287Z", "username": "bot6"}
+  {"email": "bot5@bot.pt", "name": "bot five", "registration_date": "2021-12-03 09:55:04.284Z", "username": "bot5"}
+ {"email": "bot3@bot.pt", "name": "bot three", "registration_date": "2021-12-03 09:55:04.276Z", "username": "bot3"}
+
+(10 rows)

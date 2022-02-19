@@ -1,0 +1,12 @@
+           {"video_id": 5, "creation_date": "2021-12-07 00:00:00.000Z", "id": 5, "comment": "Great phone!", "reviewer_email": "bot5@bot.pt"}
+       {"video_id": 10, "creation_date": "2021-12-22 00:00:00.000Z", "id": 10, "comment": "Great console!", "reviewer_email": "bot7@bot.pt"}
+                {"video_id": 1, "creation_date": "2021-12-29 00:00:00.000Z", "id": 4, "comment": "Awesome", "reviewer_email": "bot2@bot.pt"}
+           {"video_id": 1, "creation_date": "2021-12-26 00:00:00.000Z", "id": 8, "comment": "I miss Jonas", "reviewer_email": "bot3@bot.pt"}
+ {"video_id": 1, "creation_date": "2021-12-23 00:00:00.000Z", "id": 3, "comment": "Best club in the world", "reviewer_email": "bot0@bot.pt"}
+          {"video_id": 2, "creation_date": "2021-12-25 00:00:00.000Z", "id": 1, "comment": "What a player", "reviewer_email": "bot4@bot.pt"}
+             {"video_id": 4, "creation_date": "2021-12-04 00:00:00.000Z", "id": 7, "comment": "Incredible", "reviewer_email": "bot1@bot.pt"}
+            {"video_id": 7, "creation_date": "2021-12-05 00:00:00.000Z", "id": 6, "comment": "Great music", "reviewer_email": "bot1@bot.pt"}
+     {"video_id": 9, "creation_date": "2021-12-23 00:00:00.000Z", "id": 9, "comment": "Thank you for this", "reviewer_email": "bot4@bot.pt"}
+                {"video_id": 3, "creation_date": "2021-12-24 00:00:00.000Z", "id": 2, "comment": "3PT GOD", "reviewer_email": "bot0@bot.pt"}
+
+(10 rows)

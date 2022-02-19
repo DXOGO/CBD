@@ -1,0 +1,126 @@
+Diogo Cruz 2020/2021
+
+To initialize Cassandra: in '/<path_to_cassandra>/bin' we execute './cassandra -f'
+To start the server, in the same directory we execute './cqlsh'
+
+Using cqlsh, we can define schemas, insert data and execute queries.
+
+What is a keyspace in Cassandra?
+Keyspace is the outermost container for data in Cassandra
+
+
+// Creating a keyspace:
+cqlsh> CREATE KEYSPACE tutorial
+   ... WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+   
+
+// See all keyspaces:
+cqlsh> describe KEYSPACES
+
+system       system_distributed  system_traces  system_virtual_schema
+system_auth  system_schema       system_views   tutorial 
+
+
+// Connect to an existing keyspace:
+cqlsh> USE tutorial ;
+cqlsh:tutorial> 
+
+
+// create a table in a keyspace
+cqlsh:tutorial> CREATE TABLE emp(
+            ... emp_id int PRIMARY KEY,
+            ... emp_name text,
+            ... emp_city text,
+            ... emp_phone int,
+            ... emp_salary int,
+            ... );
+
+
+
+// see table
+cqlsh:tutorial> SELECT * FROM emp;
+
+ emp_id | emp_city | emp_name | emp_phone | emp_salary
+--------+----------+----------+-----------+------------
+
+(0 rows)
+
+
+// alter table
+cqlsh:tutorial> ALTER TABLE emp 
+            ... DROP emp_phone ;
+cqlsh:tutorial> SELECT * FROM emp ;
+
+ emp_id | emp_city | emp_name | emp_salary
+--------+----------+----------+------------
+
+(0 rows)
+
+
+// insert into table
+cqlsh:tutorial> INSERT INTO emp (emp_id, emp_name, emp_city, emp_salary) VALUES(1,'ram', 'Hyderabad', 50000);
+cqlsh:tutorial> SELECT * FROM emp ;
+
+ emp_id | emp_city  | emp_name | emp_salary
+--------+-----------+----------+------------
+      1 | Hyderabad |      ram |      50000
+
+(1 rows)
+
+cqlsh:tutorial> INSERT INTO emp (emp_id, emp_city, emp_salary) VALUES(2, 'Hyderabad', 50000);
+cqlsh:tutorial> SELECT * FROM emp ;
+
+ emp_id | emp_city  | emp_name | emp_salary
+--------+-----------+----------+------------
+      1 | Hyderabad |      ram |      50000
+      2 | Hyderabad |     null |      50000
+
+(2 rows)
+
+// update values from row
+cqlsh:tutorial> UPDATE emp
+            ... SET emp_city = 'Endor'
+            ... WHERE emp_id = 2;
+cqlsh:tutorial> SELECT * FROM emp ;
+
+ emp_id | emp_city  | emp_name | emp_salary
+--------+-----------+----------+------------
+      1 | Hyderabad |      ram |      50000
+      2 |     Endor |     null |      50000
+
+(2 rows)
+
+
+// delete row
+cqlsh:tutorial> DELETE FROM emp WHERE emp_id = 2;
+cqlsh:tutorial> SELECT * FROM emp ;
+
+ emp_id | emp_city  | emp_name | emp_salary
+--------+-----------+----------+------------
+      1 | Hyderabad |      ram |      50000
+
+(1 rows)
+
+
+// show specific column
+cqlsh:tutorial> SELECT emp_name FROM emp ;
+
+ emp_name
+----------
+      ram
+
+(1 rows)
+
+////////////////////////////////////////////////////////////////
+
+Notes:
+A primary key in Cassandra consists of one or more partition keys and zero or more clustering key components (partition key first and then clustering key)
+
+We use ALLOW FILTERING to avoid having to provide partition keywhen executing queries (beware)
+
+
+
+
+
+
+
